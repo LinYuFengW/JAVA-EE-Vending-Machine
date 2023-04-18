@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+	
+	<form-beans>
+		<form-bean name="FrontendformData" type="com.training.vo.FrontendFormData"/>
+		<form-bean name="BackendformData" type="com.training.vo.BackendFormData"/>
+		<form-bean name="CheckoutFormData" type="com.training.vo.CheckoutFormData"/>
+	</form-beans>
+	
+    <action-mappings>
+    	 <action path="/LoginAction" type="com.training.servlet.LoginAction" parameter="action">
+            <!-- 登入成功進入操作首頁 -->
+            <forward name="success" path="/FrontendAction.do?action=homePageGoods" redirect="true"/>
+            <!-- 登入失敗重回登入頁面 -->           
+            <forward name="fail" path="/Login.jsp" redirect="true"/>
+        </action>       
+        
+        <action path="/FrontendAction" type="com.training.servlet.FrontendAction" parameter="action" name="FrontendformData">
+        	<!-- 販賣機 -->
+			<forward name="homePageGoodsView" path="/VendingMachine.jsp"/>
+        	<forward name="inquireCommodityListView" path="/VendingMachine.jsp"/>
+        	<forward name="buyCommodityList" path="/FrontendAction.do?action=buyGoodsView" redirect="true"/>
+        	<forward name="buyCommodityListView" path="/FrontendAction.do?action=homePageGoods"/>
+        	<forward name="shoppingCart" path="/FrontendAction.do?action=shoppingCartView"  redirect="true"/>
+        	<forward name="shoppingCartView" path="/FrontendAction.do?action=homePageGoods"/>
+        </action>
+        
+        <action path="/BackendAction" type="com.training.servlet.BackendAction" parameter="action" name="BackendformData">
+        	<!-- 商品列表 -->
+        	<forward name="commodityListView" path="/WEB-INF/view/VM_Backend_GoodsList.jsp"/>
+            <!-- 商品維護作業 -->
+            <forward name="commodityModify" path="/BackendAction.do?action=modifyView" redirect="true"/>
+            <forward name="commodityModifyView" path="/WEB-INF/view/VM_Backend_GoodsReplenishment.jsp"/>
+            
+            <!-- 商品新增上架 -->
+            <forward name="commodityCreate" path="/BackendAction.do?action=createView" redirect="true"/>
+            <forward name="commodityCreateView" path="/WEB-INF/view/VM_Backend_GoodsCreate.jsp"/>
+            
+            <!-- 銷售報表 -->
+            <forward name="commoditySaleReport" path="/BackendAction.do?action=SalesReportView" redirect="true"/>
+            <forward name="commoditySaleReportView" path="/WEB-INF/view/VM_Backend_GoodsSaleReport.jsp"/>
+        </action>
+        
+        <!-- 購物車結帳頁地址縣市 -->
+    	<action path="/AreaAction" type="com.training.servlet.AreaAction" parameter="action">
+    	<!-- 測式元件 -->
+    	<forward name="CountyTest" path="CountyTest.jsp"/>
+        </action>  
+        
+        <action path="/CheckoutAction" type="com.training.servlet.CheckoutAction" parameter="action" name="CheckoutFormData">      	
+        	<!-- 結帳完成頁 -->
+			<forward name="checkout" path="/CheckoutAction.do?action=transactionComplete" redirect="true"/>
+        	<forward name="transactionCompleteView" path="/TransactionCompleteForm.jsp"/>
+        </action>
+        
+    </action-mappings>
+</struts-config>
